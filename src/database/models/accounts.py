@@ -106,7 +106,7 @@ class UserModel(Base):
         password hashing and setting required attributes.
         """
         user = cls(email=email, group_id=group_id)
-        user.password = raw_password
+        user.set_password(raw_password)
         return user
 
     @property
@@ -120,6 +120,12 @@ class UserModel(Base):
         """
         validators.validate_password_strength(raw_password)
         self._hashed_password = hash_password(raw_password)
+
+    def set_password(self, raw_password: str) -> None:
+        """
+        Store a validated and hashed password.
+        """
+        self.password = raw_password
 
     def verify_password(self, raw_password: str) -> bool:
         """
